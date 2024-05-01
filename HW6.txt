@@ -1,0 +1,56 @@
+Berikut adalah desain database menggunakan format DBML:
+
+Table kategori_barang {
+  id_kategori int [pk, increment]
+  nama_kategori varchar
+}
+
+Table barang {
+  id_barang int [pk, increment]
+  nama_barang varchar
+  harga_barang decimal
+  stok_barang int
+  id_kategori int [ref: > kategori_barang.id_kategori]
+}
+
+
+Query untuk melakukan operasi CRUD (Create, Read, Update, Delete) pada kedua entitas tersebut.
+
+### Query untuk membuat tabel kategori_barang dan barang:
+CREATE TABLE kategori_barang (
+  id_kategori SERIAL PRIMARY KEY,
+  nama_kategori VARCHAR
+);
+
+CREATE TABLE barang (
+  id_barang SERIAL PRIMARY KEY,
+  nama_barang VARCHAR,
+  harga_barang DECIMAL,
+  stok_barang INT,
+  id_kategori INT REFERENCES kategori_barang(id_kategori)
+);
+
+### Query untuk melakukan operasi CRUD pada barang:
+-- SELECT all barang
+SELECT * FROM barang;
+
+-- INSERT barang
+INSERT INTO barang (nama_barang, harga_barang, stok_barang, id_kategori) VALUES ('Mainan Robot', 150000, 50, 1);
+
+-- UPDATE barang
+UPDATE barang SET harga_barang = 160000 WHERE id_barang = 1;
+
+### Query untuk melakukan operasi CRUD pada kategori_barang:
+-- SELECT all kategori_barang
+SELECT * FROM kategori_barang;
+
+-- INSERT kategori_barang
+INSERT INTO kategori_barang (nama_kategori) VALUES ('Mainan Anak');
+
+-- UPDATE kategori_barang
+UPDATE kategori_barang SET nama_kategori = 'Mainan Edukasi' WHERE id_kategori = 1;
+
+### Query untuk melakukan join relasi antara barang dan kategori_barang:
+SELECT barang.nama_barang, barang.harga_barang, kategori_barang.nama_kategori
+FROM barang
+INNER JOIN kategori_barang ON barang.id_kategori = kategori_barang.id_kategori;
